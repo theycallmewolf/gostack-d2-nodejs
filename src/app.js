@@ -17,7 +17,17 @@ function logRequests(request, response, next) {
 	return next();
 }
 
+function validateId(request, response, next) {
+	const { id } = request.params;
+	if (!isUuid(id)) {
+		return response.status(400).json({ error: 'invalid ID' });
+	}
+
+	next();
+}
+
 app.use(logRequests);
+app.use('/repositories/:id', validateId);
 
 // routes
 app.get('/repositories', (request, response) => {
@@ -68,7 +78,6 @@ app.put('/repositories/:id', (request, response) => {
 app.delete('/repositories/:id', (request, response) => {
 	const { id } = request.params;
 	const repositoryIndex = repositories.findIndex((repository) => repository.id === id);
-
 	if (repositoryIndex < 0) {
 		return response.status(400).json({ error: 'repository not found' });
 	}
@@ -81,7 +90,6 @@ app.delete('/repositories/:id', (request, response) => {
 app.post('/repositories/:id/like', (request, response) => {
 	const { id } = request.params;
 	const repositoryIndex = repositories.findIndex((repository) => repository.id === id);
-
 	if (repositoryIndex < 0) {
 		return response.status(400).json({ error: 'repository not found' });
 	}
