@@ -19,9 +19,9 @@ app.post('/repositories', (request, response) => {
 
 	const newRepository = {
 		id: uuid(),
-		title,
-		url,
-		techs,
+		title: title,
+		url: url,
+		techs: techs,
 		likes: 0
 	};
 
