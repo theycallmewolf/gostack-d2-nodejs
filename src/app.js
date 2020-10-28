@@ -42,9 +42,11 @@ app.put('/repositories/:id', (request, response) => {
 	console.log(techs);
 
 	const editedRepository = {
-		title,
-		url,
-		techs
+		id: repositories[repositoryIndex].id,
+		title: title,
+		url: url,
+		techs: techs,
+		likes: repositories[repositoryIndex].likes
 	};
 
 	repositories[repositoryIndex] = editedRepository;
