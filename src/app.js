@@ -26,8 +26,19 @@ function validateId(request, response, next) {
 	next();
 }
 
+function verifyIfRepositoryExists(request, response, next) {
+	const { id } = request.params;
+	const repositoryIndex = repositories.findIndex((repository) => repository.id === id);
+	if (repositoryIndex < 0) {
+		return response.status(400).json({ error: 'repository not found' });
+	}
+
+	next();
+}
+
 app.use(logRequests);
 app.use('/repositories/:id', validateId);
+app.use('/repositories/:id', verifyIfRepositoryExists);
 
 // routes
 app.get('/repositories', (request, response) => {
@@ -53,11 +64,7 @@ app.post('/repositories', (request, response) => {
 
 app.put('/repositories/:id', (request, response) => {
 	const { id } = request.params;
-
 	const repositoryIndex = repositories.findIndex((repository) => repository.id === id);
-	if (repositoryIndex < 0) {
-		return response.status(400).json({ error: 'repository not found' });
-	}
 
 	const { title, url, techs } = request.body;
 	console.log(techs);
@@ -78,9 +85,6 @@ app.put('/repositories/:id', (request, response) => {
 app.delete('/repositories/:id', (request, response) => {
 	const { id } = request.params;
 	const repositoryIndex = repositories.findIndex((repository) => repository.id === id);
-	if (repositoryIndex < 0) {
-		return response.status(400).json({ error: 'repository not found' });
-	}
 
 	repositories.splice(repositoryIndex, 1);
 
@@ -90,9 +94,6 @@ app.delete('/repositories/:id', (request, response) => {
 app.post('/repositories/:id/like', (request, response) => {
 	const { id } = request.params;
 	const repositoryIndex = repositories.findIndex((repository) => repository.id === id);
-	if (repositoryIndex < 0) {
-		return response.status(400).json({ error: 'repository not found' });
-	}
 
 	const repository = repositories[repositoryIndex];
 
