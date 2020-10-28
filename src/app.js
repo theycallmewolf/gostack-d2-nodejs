@@ -9,6 +9,17 @@ app.use(cors());
 
 const repositories = [];
 
+//middlewares
+function logRequests(request, response, next) {
+	const { method, url } = request;
+	const logLabel = `[${method.toUpperCase()}] ${url}`;
+	console.log(logLabel);
+	return next();
+}
+
+app.use(logRequests);
+
+// routes
 app.get('/repositories', (request, response) => {
 	console.log(repositories);
 	return response.json(repositories);
