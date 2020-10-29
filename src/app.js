@@ -38,7 +38,9 @@ function verifyIfRepositoryExists(request, response, next) {
 
 app.use(logRequests);
 app.use('/repositories/:id', validateId);
+app.use('/like/:id', validateId);
 app.use('/repositories/:id', verifyIfRepositoryExists);
+app.use('/like/:id', verifyIfRepositoryExists);
 
 // routes
 app.get('/repositories', (request, response) => {
@@ -91,7 +93,7 @@ app.delete('/repositories/:id', (request, response) => {
 	return response.status(204).send();
 });
 
-app.post('/repositories/:id/like', (request, response) => {
+app.post('/like/:id', (request, response) => {
 	const { id } = request.params;
 	const repositoryIndex = repositories.findIndex((repository) => repository.id === id);
 
