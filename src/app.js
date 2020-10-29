@@ -109,9 +109,7 @@ app.post('/like/:id', (request, response) => {
 
 	repositories[repositoryIndex] = editedRepository;
 
-	const likesCount = repositories[repositoryIndex].likes;
-
-	return response.json(likesCount);
+	return response.json(repositories[repositoryIndex]);
 });
 
 module.exports = app;
